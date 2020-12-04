@@ -2,7 +2,7 @@ use aoc_2020::*;
 
 fn main() {
     let input = input_isize("day1.txt");
-    
+
     let start = std::time::Instant::now();
     println!("Part 1:");
     part1(&input);
@@ -37,4 +37,3 @@ fn part2(input: &[isize]) {
         }
     }
 }
-

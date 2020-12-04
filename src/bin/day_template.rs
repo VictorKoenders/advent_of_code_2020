@@ -15,9 +15,5 @@ fn main() {
     println!("Done in {:?}", start.elapsed());
 }
 
-fn part1(input: &[String]) {
-
-}
-fn part2(input: &[String]) {
-
-}
+fn part1(input: &[String]) {}
+fn part2(input: &[String]) {}

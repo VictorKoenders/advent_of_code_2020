@@ -8,10 +8,7 @@ fn contents(file: &str) -> String {
 }
 
 pub fn input(file: &str) -> Vec<String> {
-    contents(file)
-        .lines()
-        .map(|s| s.to_owned())
-        .collect()
+    contents(file).lines().map(|s| s.to_owned()).collect()
 }
 pub fn input_isize(file: &str) -> Vec<isize> {
     contents(file)

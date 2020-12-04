@@ -5,10 +5,10 @@ struct PasswordLine<'a> {
     min: usize,
     max: usize,
     needle: char,
-    haystack: &'a str
+    haystack: &'a str,
 }
 
-impl<'a> PasswordLine<'a>  {
+impl<'a> PasswordLine<'a> {
     pub fn parse(line: &'a str) -> Self {
         let mut parts = line.split(' ');
         let minmax = parts.next().unwrap();
@@ -39,11 +39,10 @@ impl<'a> PasswordLine<'a>  {
         let first = self.haystack.chars().nth(self.min - 1).unwrap();
         let second = self.haystack.chars().nth(self.max - 1).unwrap();
 
-        (first == self.needle && second != self.needle) ||
-            (second == self.needle && first != self.needle)
+        (first == self.needle && second != self.needle)
+            || (second == self.needle && first != self.needle)
     }
 }
-
 
 fn main() {
     let input = input("day2.txt");
@@ -77,5 +76,4 @@ fn part2(input: &[PasswordLine]) {
         }
     }
     println!("Found {:?} valid passwords", count);
-
 }
