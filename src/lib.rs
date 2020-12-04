@@ -9,7 +9,7 @@ fn contents(file: &str) -> String {
 
 pub fn input(file: &str) -> Vec<String> {
     contents(file)
-        .split_whitespace()
+        .lines()
         .map(|s| s.to_owned())
         .collect()
 }
