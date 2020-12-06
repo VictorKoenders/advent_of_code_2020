@@ -38,14 +38,7 @@ fn part2(input: &[Group]) {
             let confirmed_answers = first_person
                 .answers
                 .iter()
-                .filter(|answer| {
-                    // look for someone who DOESN'T have our answer
-                    // if this person doesn't exist, everyone has this answer
-                    other_people
-                        .iter()
-                        .find(|p| !p.answers.contains(answer))
-                        .is_none()
-                })
+                .filter(|answer| other_people.iter().all(|p| p.answers.contains(answer)))
                 .count();
 
             total_answers += confirmed_answers;
