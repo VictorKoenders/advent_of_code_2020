@@ -2,8 +2,10 @@ use aoc_2020::*;
 
 fn main() {
     let input = input("day8.txt");
-    let input = input.iter().map(Instruction::parse).collect::<Vec<_>>();
-    // let input = input_isize("dayxxx.txt");
+    let input = input
+        .iter()
+        .map(|s| Instruction::parse(s))
+        .collect::<Vec<_>>();
 
     let start = std::time::Instant::now();
     println!("Part 1:");
@@ -21,31 +23,25 @@ fn part1(input: &[Instruction]) {
     println!("Acc is {}", result.get_value());
 }
 fn part2(input: &[Instruction]) {
-    for i in 0..input.len() {
-        if let Instruction::Nop(v) = input[i] {
-            let mut new_input = input.to_vec();
-            new_input[i] = Instruction::Jmp(v);
-            let result = execute(&new_input);
-            if !result.is_infinite_loop() {
-                println!(
-                    "Changing statement at {} from NOP to JMP fixed the infinite loop",
-                    i
-                );
-                println!("Acc is {}", result.get_value());
-            }
+    let mut instruction = input.to_vec();
+    for i in 0..instruction.len() {
+        let new_value = match instruction[i] {
+            Instruction::Nop(v) => Instruction::Jmp(v),
+            Instruction::Jmp(v) => Instruction::Nop(v),
+            _ => continue,
+        };
+        let old_value = std::mem::replace(&mut instruction[i], new_value);
+
+        let result = execute(&instruction);
+        if !result.is_infinite_loop() {
+            println!(
+                "Changing statement at {} from NOP to JMP fixed the infinite loop",
+                i
+            );
+            println!("Acc is {}", result.get_value());
+            break;
         }
-        if let Instruction::Jmp(v) = input[i] {
-            let mut new_input = input.to_vec();
-            new_input[i] = Instruction::Nop(v);
-            let result = execute(&new_input);
-            if !result.is_infinite_loop() {
-                println!(
-                    "Changing statement at {} from JMP to NOP fixed the infinite loop",
-                    i
-                );
-                println!("Acc is {}", result.get_value());
-            }
-        }
+        instruction[i] = old_value;
     }
 }
 
@@ -110,7 +106,7 @@ pub enum Instruction {
 }
 
 impl Instruction {
-    pub fn parse(line: &String) -> Self {
+    pub fn parse(line: &str) -> Self {
         let mut split = line.split(' ');
         let instruction = split.next().unwrap();
 
