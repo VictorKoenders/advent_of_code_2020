@@ -35,10 +35,10 @@ fn part2(input: &[Instruction]) {
         let result = execute(&instruction);
         if !result.is_infinite_loop() {
             println!(
-                "Changing statement at {} from NOP to JMP fixed the infinite loop",
+                "Acc is {}, flipped instruction is at {}",
+                result.get_value(),
                 i
             );
-            println!("Acc is {}", result.get_value());
             break;
         }
         instruction[i] = old_value;
@@ -111,7 +111,6 @@ impl Instruction {
         let instruction = split.next().unwrap();
 
         let value = split.next().unwrap();
-        let value = value.strip_prefix('+').unwrap_or(value);
         let value: i32 = value.parse().unwrap();
 
         match instruction {
