@@ -1,4 +1,5 @@
 use aoc_2020::*;
+use std::collections::HashMap;
 
 fn main() {
     let input = input("day14.txt");
@@ -16,7 +17,7 @@ fn main() {
 }
 
 fn part1(input: &[Instruction]) {
-    let mut values = Vec::new();
+    let mut values = HashMap::<usize, u64>::new();
     let mut clear_mask = 0;
     let mut set_mask = 0;
     for instruction in input {
@@ -29,12 +30,11 @@ fn part1(input: &[Instruction]) {
                 let value = value | set_mask;
                 let value = value & !clear_mask;
 
-                values.resize_with(address + 1, || 0);
-                values[*address] = value;
+                *values.entry(*address).or_default() = value;
             }
         }
     }
-    println!("{}", values.into_iter().sum::<u64>());
+    println!("{}", values.values().sum::<u64>());
 }
 
 fn part2(_input: &[Instruction]) {}
